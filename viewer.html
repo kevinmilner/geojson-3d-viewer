@@ -338,7 +338,7 @@
 
 		async function loadGeoJSONFromObject(geojson, zMode, label) {
 			clearCurrent();
-			setStatus(`Loading… ${label ? "(" + label + ")" : ""}`);
+			setStatus("Loading…" + (label ? " (" + label + ")" : ""));
 
 			// Convert z to Cesium height meters, if present
 			const converted = JSON.parse(JSON.stringify(geojson));
