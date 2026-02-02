@@ -133,12 +133,16 @@ function initViewer() {
 	viewer.scene.skyBox.show = false;
 
 	// Capture the initial camera view so we can reset later (and override the Home button).
-	const initialCamera = {
-		destination: Cesium.Cartesian3.clone(viewer.camera.position),
-		heading: viewer.camera.heading,
-		pitch: viewer.camera.pitch,
-		roll: viewer.camera.roll
-	};
+	let initialCamera = null;
+	function captureInitialCamera() {
+		initialCamera = {
+			destination: Cesium.Cartesian3.clone(viewer.camera.position),
+			heading: viewer.camera.heading,
+			pitch: viewer.camera.pitch,
+			roll: viewer.camera.roll
+		};
+	}
+	captureInitialCamera();
 
 	function resetCameraView() {
 		viewer.camera.setView({
@@ -285,6 +289,7 @@ function initViewer() {
 		// Optional fly-to
 		if (document.getElementById("flyTo").checked) {
 			await viewer.zoomTo(ds);
+			captureInitialCamera();
 		}
 
 		// Grid
