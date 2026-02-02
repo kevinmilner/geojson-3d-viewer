@@ -113,41 +113,9 @@ function buildGraticule(viewer, bbox, gridDeg) {
 }
 
 function initViewer() {
-	const arcgisProviders = [
-		{
-			name: "ArcGIS World Imagery",
-			url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer"
-		},
-		{
-			name: "ArcGIS World Street Map",
-			url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer"
-		},
-		{
-			name: "ArcGIS World Topographic Map",
-			url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer"
-		},
-		{
-			name: "ArcGIS World Terrain Base",
-			url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Terrain_Base/MapServer"
-		}
-	];
-	const imageryViewModels = [
-		...arcgisProviders.map((provider) => new Cesium.ProviderViewModel({
-			name: provider.name,
-			tooltip: provider.name,
-			creationFunction: () => new Cesium.ArcGisMapServerImageryProvider({
-				url: provider.url
-			})
-		})),
-		new Cesium.ProviderViewModel({
-			name: "OpenStreetMap",
-			tooltip: "OpenStreetMap",
-			creationFunction: () => new Cesium.OpenStreetMapImageryProvider({
-				url: "https://tile.openstreetmap.org/"
-			})
-		})
-	];
-	const selectedImagery = imageryViewModels[0];
+	const imageryViewModels = Cesium.createDefaultImageryProviderViewModels();
+	const selectedImagery = imageryViewModels.find((vm) => (vm.name || "").includes("ArcGIS World Imagery"))
+		|| imageryViewModels[0];
 
 	// --- Viewer setup ---
 	const viewer = new Cesium.Viewer("cesiumContainer", {
